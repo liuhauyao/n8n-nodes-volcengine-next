@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-volcengine-next",
-	"version": "1.0.9",
+	"version": "1.0.16",
 	"description": "n8n community node — Volcengine Ark (火山方舟) Doubao Chat Model (OpenAI-compatible API, thinking mode).",
 	"keywords": [
 		"n8n-community-node-package",
@@ -24,15 +24,17 @@
 	},
 	"main": "dist/nodes/VolcengineArkNextChatModel/VolcengineArkNextChatModel.node.js",
 	"scripts": {
-		"build": "tsc && npm run copy-icons",
-		"prepack": "npm run build",
+		"build": "rm -rf dist && tsc && npm run copy-icons",
+		"prepack": "npm run build && node scripts/materialize-hosted-nested-deps.cjs --copy-for-publish",
 		"copy-icons": "copyfiles \"nodes/**/*.svg\" \"credentials/*.svg\" dist/",
-		"postinstall": "node scripts/fix-langchain-core-nested-modules.cjs",
+		"postinstall": "node scripts/materialize-hosted-nested-deps.cjs",
+		"verify": "npm run build && eslint dist && node scripts/lint-package-json.mjs",
+		"lint": "eslint dist && node scripts/lint-package-json.mjs",
 		"dev": "tsc --watch"
 	},
 	"files": [
 		"dist",
-		"scripts/fix-langchain-core-nested-modules.cjs",
+		"scripts/materialize-hosted-nested-deps.cjs",
 		"README.md",
 		"LICENSE"
 	],
@@ -48,17 +50,20 @@
 	"dependencies": {
 		"@langchain/core": "1.1.42",
 		"@langchain/openai": "1.4.5",
-		"@n8n/ai-utilities": "^0.14.1",
+		"@n8n/ai-utilities": "0.14.1",
 		"undici": "6.25.0"
 	},
 	"bundledDependencies": [
 		"@langchain/core",
 		"@langchain/openai",
+		"@n8n/ai-utilities",
 		"undici"
 	],
 	"devDependencies": {
+		"@n8n/eslint-plugin-community-nodes": "^0.15.0",
 		"@types/node": "^22.0.0",
 		"copyfiles": "^2.4.1",
+		"eslint": "^9.29.0",
 		"n8n-workflow": ">=1.82.0",
 		"typescript": "~5.7.0"
 	},

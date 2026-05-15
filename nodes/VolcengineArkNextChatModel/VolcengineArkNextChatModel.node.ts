@@ -1,3 +1,7 @@
+const pathBootstrap = require('path');
+
+require((pathBootstrap as typeof import('path')).join(__dirname, '..', '..', '..', 'scripts', 'materialize-hosted-nested-deps.cjs'));
+
 import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import type { BaseMessage } from '@langchain/core/messages';
 import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
